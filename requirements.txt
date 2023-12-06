@@ -28,4 +28,4 @@ requests==2.31.0
 sqlparse==0.4.4
 urllib3==2.1.0
 virtualenv==20.25.0
-
+Pillow==10.1.0
