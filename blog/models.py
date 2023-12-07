@@ -9,10 +9,18 @@ class Creator(models.Model):
     
     def __str__(self):
         return self.user.email
-       
+
+
+class Blog(models.Model):
+    name = models.CharField(max_length=255, null=True, blank=True)
+
+    def __str__(self):
+        return self.name
 
 class Post(models.Model):
-    title = models.CharField(max_length=15, unique=True)
+    auto_incement_id=models.AutoField(primary_key=True)
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, null=True, blank=True, related_name='posts')
+    title = models.CharField(max_length=15)
     body = models.TextField()
     user_type =  models.ForeignKey(User,on_delete=models.CASCADE)  
     created_at = models.DateTimeField(auto_now_add=True)
@@ -23,7 +31,7 @@ class Post(models.Model):
         return self.title
 
     class Meta:
-        ordering = ["id"]
+        ordering = ["auto_incement_id"]
 
     @property
     def comments_count(self):
@@ -32,6 +40,7 @@ class Post(models.Model):
 
 class Comment(models.Model):
     post = models.ForeignKey(Post,on_delete=models.CASCADE)
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, null=True, blank=True, related_name='comments')
     user_type =  models.ForeignKey(User,on_delete=models.CASCADE)  
     comment_body = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
@@ -42,27 +51,6 @@ class Comment(models.Model):
         
                 
 
-class Blog(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE,related_name='post')
-    # comment = models.ForeignKey(Comment,on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f"Blog for {self.post.title}"
-
-    # @receiver(post_save, sender=Post)
-    # @receiver(post_save, sender=Comment)
-    # def update_blog_info(sender, instance, created, **kwargs):
-    #     if sender == Post:
-    #         blog, created = Blog.objects.get_or_create(post=instance)
-    #         blog.post_title = instance.title
-    #         blog.comments_count = instance.comment_set.count()
-    #         blog.save()
-    #     elif sender == Comment:
-    #         post = instance.post
-    #         blog, created = Blog.objects.get_or_create(post=post)
-    #         blog.comments_count = post.comment_set.count()
-    #         blog.save()     
-            
             
   
         

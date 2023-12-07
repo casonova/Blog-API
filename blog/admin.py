@@ -4,8 +4,8 @@ from blog.models import Post, Creator, Comment, Blog
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ['title','body','user_type','created_at','updated_at','post_image']
-    search_fields = ['user']
+    list_display = ['auto_incement_id','blog','title','body','user_type','created_at','updated_at','post_image']
+    search_fields = ['blog']
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
@@ -19,5 +19,5 @@ class CreatorAdmin(admin.ModelAdmin):
 
 @admin.register(Blog)
 class BlogAdmin(admin.ModelAdmin):
-    list_display =['post']
+    list_display =['name']
     
