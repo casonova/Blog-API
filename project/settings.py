@@ -28,7 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-AUTH_USER_MODEL="accounts.User"
+AUTH_USER_MODEL = "accounts.User"
 
 # Application definition
 
@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     "django_extensions",
     "rest_framework",
     "blog.apps.BlogConfig",
-    "accounts.apps.AccountsConfig"
+    "accounts.apps.AccountsConfig",
 ]
 
 MIDDLEWARE = [
