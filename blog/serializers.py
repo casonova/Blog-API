@@ -3,11 +3,22 @@ from rest_framework import serializers
 from blog.models import Blog, Comment, Creator, Post
 
 
+class CreatorSerializer(serializers.Serializer):
+    """Serializer for Creator MOdel"""
+
+    class Meta:
+        model = Creator
+        fields = "user"
+
+
 class PostSerializer(serializers.ModelSerializer):
+    """Serializer for Post model"""
+
     class Meta:
         model = Post
         fields = [
             "auto_incement_id",
+            "blog",
             "title",
             "body",
             "user_type",
@@ -34,6 +45,8 @@ class PostSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
+    """Seializer for Comment Model"""
+
     class Meta:
         model = Comment
         fields = [
@@ -52,6 +65,8 @@ class CommentSerializer(serializers.ModelSerializer):
 
 
 class BlogSerializer(serializers.ModelSerializer):
+    """Serializer for Blog model"""
+
     posts = PostSerializer(many=True)
     comments = CommentSerializer(many=True)
 

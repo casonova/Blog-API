@@ -10,9 +10,13 @@ from .serializers import UserSerializer
 
 
 class UserCreateAPIView(CreateAPIView):
+    """View to create a user"""
+
     serializer_class = UserSerializer
 
 
 class UserListAPIView(ListAPIView):
+    """View to get all user"""
+
     queryset = User.objects.all()
     serializer_class = UserSerializer

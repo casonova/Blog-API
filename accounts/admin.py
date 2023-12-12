@@ -10,7 +10,6 @@ class UserAdmin(admin.ModelAdmin):
         "username",
         "name",
         "password",
-        "user_type",
         "created_date",
         "updated_date",
     ]

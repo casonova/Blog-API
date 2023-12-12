@@ -30,4 +30,4 @@ class CreatorAdmin(admin.ModelAdmin):
 
 @admin.register(Blog)
 class BlogAdmin(admin.ModelAdmin):
-    list_display = ["name"]
+    list_display = ["id", "name"]

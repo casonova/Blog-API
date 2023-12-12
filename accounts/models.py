@@ -13,27 +13,27 @@ class CustomUserManager(UserManager):
         return user
 
     def create_user(self, email, password=None, **extra_fields):
+        """Create User with is_active to true"""
+
         extra_fields.setdefault("is_staff", False)
         extra_fields.setdefault("is_superuser", False)
         return self._create_user(email, password, **extra_fields)
 
     def create_superuser(self, email, password=None, **extra_fields):
+        """Create Superuser"""
+
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
         return self._create_user(email, password, **extra_fields)
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    type_choice = (
-        ("admin", "admin"),
-        ("visitor", "visitor"),
-        ("creator", "creator"),
-    )
+    """User model"""
+
     email = models.EmailField(unique=True)
     username = models.CharField(max_length=255)
     name = models.CharField(max_length=255, null=True, blank=True)
     password = models.CharField(max_length=2555)
-    user_type = models.CharField(choices=type_choice, default="visitor", max_length=100)
     created_date = models.DateField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
@@ -46,6 +46,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = "email"
     EMAIL_FIELD = "email"
     REQUIRED_FIELDS = []
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            self.set_password(self.password)
+
+        super(User, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.email

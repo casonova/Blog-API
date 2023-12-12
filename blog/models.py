@@ -6,6 +6,8 @@ from accounts.models import User
 
 
 class Creator(models.Model):
+    """Model for Creator user"""
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -13,6 +15,8 @@ class Creator(models.Model):
 
 
 class Blog(models.Model):
+    """Model for Blog"""
+
     name = models.CharField(max_length=255, null=True, blank=True)
 
     def __str__(self):
@@ -20,6 +24,8 @@ class Blog(models.Model):
 
 
 class Post(models.Model):
+    """Model for Post"""
+
     auto_incement_id = models.AutoField(primary_key=True)
     blog = models.ForeignKey(
         Blog, on_delete=models.CASCADE, null=True, blank=True, related_name="posts"
@@ -43,6 +49,8 @@ class Post(models.Model):
 
 
 class Comment(models.Model):
+    """Model for Comment"""
+
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     blog = models.ForeignKey(
         Blog, on_delete=models.CASCADE, null=True, blank=True, related_name="comments"
