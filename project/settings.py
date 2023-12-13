@@ -172,3 +172,45 @@ SPECTACULAR_SETTINGS = {
     'SERVE_INCLUDE_SCHEMA': False,
 
 }
+
+
+SECURE_BROWSER_XSS_FILTER = True
+# This setting enables the XSS (Cross-Site Scripting) filter in modern web browsers.
+# When this is set to True, it instructs the browser to detect and prevent some 
+# types of XSS attacks by sanitizing pages to remove potentially malicious scripts
+# or code.
+
+SECURE_SSL_REDIRECT = True
+# When this setting is enabled (set to True), it ensures that all HTTP requests 
+# are redirected to their HTTPS counterparts. In other words, if a user tries
+# to access a page using an insecure HTTP connection
+
+SECURE_HSTS_SECONDS = 86400
+# This setting defines the duration, in seconds, for which the HSTS policy
+# should be active in the user's browser after being communicated by the server. 
+# In this case, it's set to 86,400 seconds, which equals one day. During this
+# period, the browser will enforce HTTPS connections exclusively for the 
+# specified duration after initially visiting the website.
+
+SECURE_HSTS_PRELOAD = True
+# When this setting is enabled (set to True), it indicates that the website
+# should be included in the HSTS preload list maintained by browsers.
+# This preload list is a hardcoded list of websites that will always enforce HTTPS, 
+# even for the first visit, for all users accessing the site via supported browsers.
+# Being on this list enhances security but requires a commitment to always serving HTTPS.
+
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+# Enabling this setting (set to True) instructs the browser to apply the 
+# HSTS policy not only to the primary domain but also to all its subdomains.
+# This ensures that all subdomains will also enforce HTTPS connections when 
+# accessing the website.
+
+SESSION_COOKIE_SECURE = True
+# hen this setting is enabled, it instructs the web server to only send
+# session cookies over HTTPS connections. Session cookies are used to 
+# maintain a user's session data between page requests.
+
+CSRF_COOKIE_SECURE = True
+# CSRF (Cross-Site Request Forgery) is an attack where a 
+# malicious website can make unauthorized requests to a different site where 
+# the victim is authenticated.
