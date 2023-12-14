@@ -29,11 +29,18 @@ class CustomUserManager(UserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     """User model"""
+    
+    user_choice = (
+        ("admin","admin"),
+        ("visitor","visitor"),
+        ("creator","creator"),
+    )
 
     email = models.EmailField(unique=True)
     username = models.CharField(max_length=255)
     name = models.CharField(max_length=255, null=True, blank=True)
     password = models.CharField(max_length=2555)
+    action_choice = models.CharField(max_length=20, choices=user_choice, default="visitor")
     created_date = models.DateField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
@@ -44,14 +51,18 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = CustomUserManager()
 
     USERNAME_FIELD = "email"
-    EMAIL_FIELD = "email"
     REQUIRED_FIELDS = []
 
     def save(self, *args, **kwargs):
+
         if not self.pk:
             self.set_password(self.password)
+            
+        if self.action_choice == "admin":
+            self.is_staff = True
+            self.is_superuser = True
 
-        super(User, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.email

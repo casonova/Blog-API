@@ -5,15 +5,6 @@ from django.dispatch import receiver
 from accounts.models import User
 
 
-class Creator(models.Model):
-    """Model for Creator user"""
-
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.user.email
-
-
 class Blog(models.Model):
     """Model for Blog"""
 

@@ -1,6 +1,6 @@
 from rest_framework.test import APITestCase
 from django.urls import reverse
-from blog.models import Blog, Creator, Post, Comment
+from blog.models import Blog, Post, Comment
 from accounts.models import User
 from rest_framework.test import APIRequestFactory
 from blog.views import *
@@ -16,7 +16,7 @@ class TestView(APITestCase):
     # Urls of Views
     user_detail_url = reverse("user_detail")
     post_url = reverse('post')
-    comment_url = reverse('comment')
+    # comment_url = reverse('comment')
     blog_url = reverse('blog-list')
     user_create_url = reverse("user_create")
     token = reverse("token_obtain_pair")
@@ -28,7 +28,9 @@ class TestView(APITestCase):
                 email="zainab@gmail.com",
                 username="zainab",
                 name="zainab",
-                password="zainab"
+                password="zainab",
+                action_choice="creator"
+                
             )
         
         self.user2 = User.objects.create(
@@ -36,6 +38,7 @@ class TestView(APITestCase):
                 username="zubair",
                 name="zubair",
                 password="zubair",
+                action_choice="visitor",
                 is_superuser=True, 
                 is_staff=True
             )
@@ -43,8 +46,6 @@ class TestView(APITestCase):
         self.blog = Blog.objects.create(
                 name="Blog 1"
             )
-        
-        self.creator = Creator.objects.create(user=self.user1)
         
         self.post = Post.objects.create(
                 blog=self.blog,
@@ -154,7 +155,7 @@ class TestView(APITestCase):
         responce = self.client.get(self.blog_url)
         self.assertEqual(responce.status_code, 200)   
         
-    #=========== POST Request API Test ============================#     
+    # =========== POST Request API Test ============================#     
         
     def test_create_blog(self):
         responce = self.client.post(self.blog_url, self.blog_data, format="json")
@@ -167,6 +168,7 @@ class TestView(APITestCase):
             
     def test_create_post(self):
         responce = self.client.post(self.post_url, self.post_data, format="json")
+        # import pdb; pdb.set_trace()
         self.assertEqual(responce.status_code, 201)    
         
     def test_create_post_unauthenticated(self):
@@ -176,11 +178,12 @@ class TestView(APITestCase):
         
     def test_create_comment(self):
         request_comment = self.factory.post(self.comment_url, data=self.comment_data, format="json")
-        comment_view = CommentApiView.as_view()
+        comment_view = CommentViewSet.as_view()
         responce = comment_view(request_comment)
+        import pdb; pdb.set_trace()
         self.assertEqual(responce.status_code, 201)    
         
-    #================= Update Request API Test ==================#    
+    # #================= Update Request API Test ==================#    
         
     def test_update_blog_data_patch_authenticated(self):
         
@@ -193,6 +196,52 @@ class TestView(APITestCase):
         url = reverse("blog-detail", kwargs={'pk': self.blog.pk})
         responce = client.patch(url, self.update_blog_data, format="json")
         self.assertEqual(responce.status_code, 401)       
+        
+    def test_update_post_data_put_authenticated(self):
+        client = APIClient()
+        data = {
+            "blog":1,
+            "title":"Narnia",
+            "body":"Sicology",
+            "user_type":6
+        }
+        url = reverse("post", kwargs={'pk': self.post.pk})
+        responce = client.put(url, data, format="json")
+        self.assertEqual(responce.status_code, 401)    
+        
+    def test_update_post_data_patch_authenticated(self):
+        client = APIClient()
+        data = {
+            "blog":1,
+            "title":"Narnia Lullabay",
+            "body":"Sicology",
+            "user_type":6
+        }
+        url = reverse("post", kwargs={'pk': self.post.pk})
+        responce = client.put(url, data, format="json")
+        self.assertEqual(responce.status_code, 401)   
+       
+    def test_update_comment_data_put_authenticated(self):  
+        data = {
+            "post":1,
+            "comment_body":"Youtube",
+            "user_type":2
+        }
+        url = reverse("comment-detail", kwargs={'pk': self.comment.pk})  
+        responce = self.client.put(url, data, format="json") 
+        # import pdb; pdb.set_trace()
+        self.assertEqual(responce.status_code, 200) 
+        
+    def test_update_comment_data_patch_authenticated(self):  
+        data = {
+            "post":1,
+            "comment_body":"Billa",
+            "user_type":2
+        }
+        url = reverse("comment-detail", kwargs={'pk': self.comment.pk})  
+        responce = self.client.put(url, data, format="json") 
+        # import pdb; pdb.set_trace()
+        self.assertEqual(responce.status_code, 200)     
         
     def test_update_blog_data_put_authenticated(self):
         data = {
@@ -246,3 +295,12 @@ class TestView(APITestCase):
         responce = self.client.delete(url)
         self.assertEqual(responce.status_code, 204) 
                 
+    def test_delete_post(self):
+        url = reverse("post", kwargs={'pk': self.post.pk})
+        responce = self.client.delete(url)
+        self.assertEqual(responce.status_code, 200) 
+    
+    def test_delete_comment(self):
+        url = reverse("comment-detail", kwargs={'pk': self.comment.pk})
+        responce = self.client.delete(url)
+        self.assertEqual(responce.status_code, 204)                 

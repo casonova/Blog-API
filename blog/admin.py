@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from blog.models import Blog, Comment, Creator, Post
+from blog.models import Blog, Comment, Post
 
 
 @admin.register(Post)
@@ -20,12 +20,7 @@ class PostAdmin(admin.ModelAdmin):
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ["post", "user_type", "comment_body", "created_at", "updated_at"]
-
-
-@admin.register(Creator)
-class CreatorAdmin(admin.ModelAdmin):
-    list_display = ["user"]
+    list_display = ["id", "post", "user_type", "comment_body", "created_at", "updated_at"]
 
 
 @admin.register(Blog)

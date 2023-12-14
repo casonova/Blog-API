@@ -1,14 +1,6 @@
 from rest_framework import serializers
 
-from blog.models import Blog, Comment, Creator, Post
-
-
-class CreatorSerializer(serializers.Serializer):
-    """Serializer for Creator MOdel"""
-
-    class Meta:
-        model = Creator
-        fields = "user"
+from blog.models import Blog, Comment, Post
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -27,10 +19,10 @@ class PostSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         user_type = data.get("user_type")
-        if not Creator.objects.filter(user__email=user_type).exists():
+        if user_type.action_choice != "creator":
             raise serializers.ValidationError(
-                "You are not allowed to perform this action, First make yourself creator"
-            )
+                "You are not allowed to perform this action, Only creator can do this"
+            )    
         return data
 
     def validate_title(self, value):
@@ -57,10 +49,10 @@ class CommentSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         user_type = data.get("user_type")
-        if Creator.objects.filter(user__email=user_type).exists():
+        if user_type.action_choice != "visitor":
             raise serializers.ValidationError(
-                "You are a creator you are not allowed to perform this action. "
-            )
+                "You are not allowed to perform this action, only visitor can do this"
+            )    
         return data
 
 
@@ -73,6 +65,7 @@ class BlogSerializer(serializers.ModelSerializer):
     class Meta:
         model = Blog
         fields = ["id", "name", "posts", "comments"]
+         
 
     def create(self, validated_data):
         user = self.context.get("request").user
