@@ -21,7 +21,7 @@ class PostSerializer(serializers.ModelSerializer):
         user_type = data.get("user_type")
         if user_type.action_choice != "creator":
             raise serializers.ValidationError(
-                "You are not allowed to perform this action, Only creator can do this"
+                "You are not allowed to perform this action, Only creator user of this account can do this"
             )    
         return data
 

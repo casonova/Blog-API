@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework_simplejwt",
     "rest_framework.authtoken",
+    'rest_framework_simplejwt.token_blacklist',
     "rest_auth",
     "blog.apps.BlogConfig",
     "accounts.apps.AccountsConfig",
@@ -94,6 +95,8 @@ DATABASES = {
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": datetime.timedelta(days=15),
     "REFRESH_TOKEN_LIFETIME": datetime.timedelta(days=15),
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True
 }
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -167,7 +170,7 @@ REST_FRAMEWORK = {
 
 SPECTACULAR_SETTINGS = {
     'TITLE': 'Blog API',
-    'DESCRIPTION': 'Your project description',
+    'DESCRIPTION': 'Blog Api Project which contains api to make,edit and delete blogs, posta and comments ',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
 
