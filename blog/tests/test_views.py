@@ -9,8 +9,8 @@ from rest_framework.test import APIClient
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import status
 
+
 class TestView(APITestCase):
-    
     
     factory = APIRequestFactory()
     

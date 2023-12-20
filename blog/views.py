@@ -64,6 +64,7 @@ class BlogVIewSet(viewsets.ModelViewSet):
     serializer_class = BlogSerializer
     permission_classes = [IsAdminUser]
 
+
 class CommentViewSet(viewsets.ModelViewSet):
     
     queryset = Comment.objects.all()
