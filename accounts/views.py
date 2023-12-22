@@ -36,10 +36,10 @@ class LoginAPIView(APIView):
             if email is None or password is None:
                 return Response({'error': 'Please provide both email and password'}, status=HTTP_400_BAD_REQUEST)
 
-            user = User.objects.get(email=email)
-
             if not User.objects.filter(email=email).exists():
                 return Response({'error': 'Invalid Credentials'}, status=HTTP_401_UNAUTHORIZED)
+            
+            user = User.objects.get(email=email)
 
             refresh = RefreshToken.for_user(user)
             token = {
