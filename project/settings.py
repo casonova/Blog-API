@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+import datetime
 import os
 from pathlib import Path
 
@@ -26,8 +27,9 @@ SECRET_KEY = "django-insecure-683y9^fvf)uhk1&7vtipe09(znr!o%lgii3@469ji9=-5m7cqt
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
+AUTH_USER_MODEL = "accounts.User"
 
 # Application definition
 
@@ -40,6 +42,13 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_extensions",
     "rest_framework",
+    "rest_framework_simplejwt",
+    "rest_framework.authtoken",
+    'rest_framework_simplejwt.token_blacklist',
+    "rest_auth",
+    "blog.apps.BlogConfig",
+    "accounts.apps.AccountsConfig",
+    "drf_spectacular",
 ]
 
 MIDDLEWARE = [
@@ -83,7 +92,12 @@ DATABASES = {
     }
 }
 
-
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": datetime.timedelta(days=15),
+    "REFRESH_TOKEN_LIFETIME": datetime.timedelta(days=15),
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True
+}
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
@@ -144,4 +158,20 @@ LOGGING = {
             "propagate": True,
         },
     },
+}
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Blog API',
+    'DESCRIPTION': 'Blog Api Project which contains api to make,edit and delete blogs, posta and comments ',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+
 }
